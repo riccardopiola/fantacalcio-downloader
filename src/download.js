@@ -43,11 +43,11 @@ const encodeName = (season, fixture) => (
 )
 
 const decodeName = (filename) => {
-  const regex = /Voti_Fantacalcio_Stagione_(\d{4}-\d{2})_Giornata_(\d+)/
+  const regex = /Voti_Fantacalcio_Stagione_(\d{4}-\d{2})_Giornata_(\d+)(.*)/
   const results = filename.match(regex)
   if (!results)
     throw new Error(`Cannot extract season and fixture from filename "${filename}"`)
-  return [ results[1], Number.parseInt(results[2], 10) ]
+  return [ results[1], Number.parseInt(results[2], 10), results[3] ]
 }
 
 function downloadWithCache(season, fixture, cookie, cache_dir) {
@@ -80,7 +80,8 @@ const _yearToSeasonIdMap = {
 
 async function downloadVotes(season, fixture, cookie, outFile) {
   const seasonId = _yearToSeasonIdMap[season]
-  if (!seasonId) throw new Error(`Invalid season provided. Expected one of ${_yearToSeasonIdMap.join(' ')} but instead got ${season}`)
+  if (!seasonId)
+    throw new Error(`Invalid season provided. Expected one of ${_yearToSeasonIdMap.join(' ')} but instead got ${season}`)
   const url = `https://www.fantacalcio.it/api/v1/Excel/votes/${seasonId}/${fixture}`
   log.info(`Trying to download ${season} #${fixture}...`)
   log.debug("Download url:  " + url)

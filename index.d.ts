@@ -68,9 +68,9 @@ export function encodeName(
 /**
  * Inverse of encodeName(). Extracts season and fixture from a canonical
  * filaname of the type "Voti_Fantacalcio_Stagione_2022-23_Giornata_18.xlsx"
- * @returns A tuple containing [ season, fixture ]
+ * @returns A tuple containing [ season, fixture, file_extension (if present) ]
  */
-export function decodeName(filename: string): [ season: string, fixture: number ]
+export function decodeName(filename: string): [ string, number, string|undefined ]
 
 enum PlayerRole {
   Portiere        = "P",
